@@ -18,18 +18,18 @@
 })();
 
 function parse_rank(s) {
+    var grades = {
+        k: { base: 2100, multi: -100 },
+        d: { base: 2000, multi: +100 },
+        p: { base: 2900, multi: +100 }
+    };
+    var p = /[\(\[](\d+)([dkp])[\)\]]$/;
     s = s.trim();
-    if (!/[\(\[]\d+[dkp][\)\]]/.test(s)) {
+    if (!p.test(s)) {
         return null;
     }
-    var m = s.match(/[\(\[](\d+)([dkp])[\)\]]$/);
-    if (m[2] == "k") {
-        return 2100 - (m[1] * 100);
-    }  else if (m[2] == "d") {
-        return 2000 + (m[1] * 100);
-    } else {
-        return 2900 + (m[1] * 100);
-    }
+    var m = s.match(p);
+    return grades[m[2]].base + (+m[1] * grades[m[2]].multi);
 }
 
 function is_list_view() {
