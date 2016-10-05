@@ -3,6 +3,7 @@
 // @version      1
 // @description  Sort OGS observe games pages by player strength
 // @author       Kjetil Hjartnes
+// @homepageURL  https://github.com/dsj9/ogs-games-sort
 // @match        *://online-go.com/*
 // @require      https://gist.github.com/raw/2625891/waitForKeyElements.js
 // @grant        none
