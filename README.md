@@ -1,9 +1,7 @@
 # OGS Games Sort
 
-## Installation
+## Requirements
 
-Chrome: Install [Tampermonkey](https://chrome.google.com/webstore/detail/tampermonkey/dhdgffkkebhmkfjojejmpbldmpobfkfo)
+**Chrome**: Install [TamperMonkey](https://chrome.google.com/webstore/detail/tampermonkey/dhdgffkkebhmkfjojejmpbldmpobfkfo)
 
-## Issues
-
-Not working in Firefox.
+**Firefox**: Install [GreaseMonkey](https://addons.mozilla.org/en-US/firefox/addon/greasemonkey/)
