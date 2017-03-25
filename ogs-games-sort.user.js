@@ -1,9 +1,8 @@
 // ==UserScript==
 // @name         OGS Games Sort
-// @version      1
+// @version      2
 // @description  Sort OGS observe games pages by player strength
 // @author       Kjetil Hjartnes
-// @homepageURL  https://github.com/dsj9/ogs-games-sort
 // @match        *://online-go.com/*
 // @require      https://gist.github.com/raw/2625891/waitForKeyElements.js
 // @grant        none
@@ -13,7 +12,7 @@
     'use strict';
 
     waitForKeyElements (
-    '#server_games_container',
+    '.GameList',
     ogs_sort_games
     );
 })();
@@ -34,7 +33,7 @@ function parse_rank(s) {
 }
 
 function is_list_view() {
-    return window.site_preferences.show_game_list_view;
+    return $('.GameList').hasClass('GobanLineSummaryContainer');
 }
 
 function sort_games(games) {
@@ -59,15 +58,15 @@ function sort_games(games) {
 
 function get_grid(container) {
     var games = [];
-    var items = container.find("div.board_container");
+    var items = container.find(".MiniGoban");
     $.each(items, function(i){
-        var b = $(this).find(".board_title_black .player-name").text();
-        var w = $(this).find(".board_title_white .player-name").text();
+        var b = $(this).find(".title-black .player-name").text();
+        var w = $(this).find(".title-white .player-name").text();
         if (!b.length || !w.length) {
             return games;
         }
         games[i] = {
-            id: "container-" + $(this).find("a.board").attr("id"),
+            id: "game-" + i,
             b_name: b,
             w_name: w,
             b_rating: parse_rank(b),
@@ -80,32 +79,30 @@ function get_grid(container) {
 
 function get_list(container) {
     var games = [];
-    var rows = container.find("tr.board");
-    if (!rows.length) {
-        return games;
-    }
-    var count = rows.length;
-    for (var i = 0; i < count; i++) {
+    var items = container.find(".GobanLineSummary");
+    $.each(items, function(i){
+        var b = $(this).find(".Player").first();
+        var w = $(this).find(".Player").last();
         games[i] = {
-            id: rows[i].attributes.id.textContent,
-            b_name: rows[i].children[2].textContent,
-            w_name: rows[i].children[4].textContent,
-            b_rating: parse_rank(rows[i].children[2].textContent),
-            w_rating: parse_rank(rows[i].children[4].textContent)
+            id: "game-"+i,
+            b_name: b.text(),
+            w_name: w.text(),
+            b_rating: parse_rank(b.attr( "data-rank" )),
+            w_rating: parse_rank(w.attr( "data-rank" ))
         };
-    }
+        $(this).attr("id", games[i].id);
+    });
     return games;
 }
 
 function ogs_sort_games(jNode) {
 
-    var container, games;
+    var games;
+    var container = jNode;
 
     if (is_list_view()) {
-        container = jNode.find(".game-list");
-        games = get_list(container);
+        games = get_list(jNode);
     } else {
-        container = jNode.find(".minigobans");
         games = get_grid(container);
     }
 
