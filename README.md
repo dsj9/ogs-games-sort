@@ -10,4 +10,4 @@
 
 **Go to https://github.com/dsj9/ogs-games-sort/raw/master/ogs-games-sort.user.js to install the script.**
 
-**Tip**: select "Show 20" games per page on top of the games list for best results.
+**Tip**: select "Show 28" games per page on top of the games list for best results.
